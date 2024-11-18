@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import supabase from '../../lib/supabaseClient';
-import styles from '../invoice-confirmation/InvoiceConfirmationPage.module.css';
+import { useSearchParams } from 'next/navigation';  // Import useSearchParams hook
+import supabase from '../../lib/supabaseClient';  // Import Supabase client
+import styles from '../invoice-confirmation/InvoiceConfirmationPage.module.css';  // Import the CSS module
 
 interface Item {
   sl: string;
@@ -39,11 +39,11 @@ interface Invoice {
 
 const InvoiceConfirmationPage = () => {
   const [invoice, setInvoice] = useState<Invoice | null>(null);
-  const searchParams = useSearchParams();
-  const id = searchParams.get('id');
+  const searchParams = useSearchParams(); // Get the search parameters (query params) from the URL
+  const id = searchParams.get('id'); // Access the 'id' query parameter from the URL
 
   useEffect(() => {
-    if (!id) return;
+    if (!id) return; // If there is no ID in the query, do nothing
 
     const fetchInvoice = async () => {
       const { data, error } = await supabase
@@ -93,32 +93,18 @@ const InvoiceConfirmationPage = () => {
       {/* Items Information */}
       <section>
         <h3>Items</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>SL</th>
-              <th>Description</th>
-              <th>MRP</th>
-              <th>Discount</th>
-              <th>Rate After Discount</th>
-              <th>Quantity</th>
-              <th>Final Rate</th>
-            </tr>
-          </thead>
-          <tbody>
-            {invoice.items.map((item, index) => (
-              <tr key={index}>
-                <td>{item.sl}</td>
-                <td>{item.description}</td>
-                <td>{item.mrp}</td>
-                <td>{item.discount}%</td>
-                <td>{item.rateAfterDiscount}</td>
-                <td>{item.qty}</td>
-                <td>{item.finalRate}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {invoice.items.map((item, index) => (
+          <div key={index}>
+            <p>SL: {item.sl}</p>
+            <p>Description: {item.description}</p>
+            <p>MRP: {item.mrp}</p>
+            <p>Discount: {item.discount}%</p>
+            <p>Rate After Discount: {item.rateAfterDiscount}</p>
+            <p>Quantity: {item.qty}</p>
+            <p>Final Rate: {item.finalRate}</p>
+            <hr />
+          </div>
+        ))}
       </section>
 
       {/* Footer Information */}
